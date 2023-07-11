@@ -11,9 +11,17 @@ public class DestructionSystem : ComponentSystem
         if (Game.IsGameOver())
             return;
 
+        float3 playerPos = Game.GetPlayerPosition();
         Entities.WithAll<EnemyTag>().ForEach((Entity enemy, ref Translation enemyPos) =>
         {
             float3 enemyPosition = enemyPos.Value;
+
+            playerPos.y = enemyPos.Value.y;
+            if (math.distance(enemyPos.Value, playerPos) <= distanceThreshold * 4)
+            {
+                //Game.EndGame();
+                PostUpdateCommands.DestroyEntity(enemy);
+            }
 
             Entities.WithAll<BulletTag>().ForEach((Entity bullet, ref Translation bulletPos) =>
             {

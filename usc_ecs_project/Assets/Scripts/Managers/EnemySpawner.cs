@@ -105,7 +105,7 @@ public class EnemySpawner : MonoBehaviour
     private float3 RandomPointOnCircle(float radius)
     {
         Vector2 randomPoint = Random.insideUnitCircle.normalized * radius;
-        return new float3(randomPoint.x, 10, randomPoint.y) + (float3) Game.GetPlayerPosition();
+        return new float3(randomPoint.x, 0, randomPoint.y) + (float3) Game.GetPlayerPosition();
     }
 
     // signal from GameManager to begin spawning

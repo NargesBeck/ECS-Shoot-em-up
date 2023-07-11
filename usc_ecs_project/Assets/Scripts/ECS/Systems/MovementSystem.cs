@@ -10,7 +10,7 @@ public class MovementSystem : ComponentSystem
         Entities.WithAll<MoveForward>().ForEach(
             (ref Translation trans, ref Rotation rot, ref MoveForward moveForward, ref LocalToWorld localToWorld) =>
             {
-                trans.Value = math.lerp(trans.Value, playerPos, moveForward.speed * Time.DeltaTime * 0.3f);
+                trans.Value += moveForward.speed * Time.DeltaTime * math.forward(rot.Value);
             }
         );
     }
