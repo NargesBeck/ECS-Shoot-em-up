@@ -10,6 +10,8 @@ public class CrystalSpawner : MonoBehaviour
     private Entity crystalEntityPrefab;
 
     [SerializeField] private GameObject crystalPrefab;
+    [SerializeField] private GameObject crystalPrefabNonECS;
+
 
     private void Start()
     {
@@ -22,15 +24,22 @@ public class CrystalSpawner : MonoBehaviour
 
     public void SpawnCrystal(float3 pos)
     {
-        NativeArray<Entity> enemyArray = new NativeArray<Entity>(1, Allocator.Temp);
-        for (int i = 0; i < enemyArray.Length; i++)
+        if (Game.ECSActive)
         {
-            enemyArray[i] = entityManager.Instantiate(crystalEntityPrefab);
-            entityManager.SetComponentData(enemyArray[i], new Translation
+            NativeArray<Entity> enemyArray = new NativeArray<Entity>(1, Allocator.Temp);
+            for (int i = 0; i < enemyArray.Length; i++)
             {
-                Value = pos
-            });
-        }        
-        enemyArray.Dispose();
+                enemyArray[i] = entityManager.Instantiate(crystalEntityPrefab);
+                entityManager.SetComponentData(enemyArray[i], new Translation
+                {
+                    Value = pos
+                });
+            }        
+            enemyArray.Dispose();
+        }
+        else
+        {
+            Instantiate(crystalPrefabNonECS).transform.position = pos;
+        }
     }
 }
